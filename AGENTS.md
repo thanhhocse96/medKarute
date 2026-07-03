@@ -1,4 +1,4 @@
-# AGENTS.md — research-helper
+# AGENTS.md — MedKarute
 
 > Startup order, invariants, routing. Chi tiết workflow → `CLAUDE.md` + `docs/guides/`.
 

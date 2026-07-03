@@ -53,7 +53,93 @@ flowchart TD
     YAML --> MCP["uvx endnote-mcp serve\n(.mcp.json bare)"]
 ```
 
-**Launcher**: `.mcp.json` gọi `uvx endnote-mcp serve` trực tiếp. `markitdown` giữ `uvx` trực tiếp.
+**Launcher**: `.mcp.json` gọi `uvx endnote-mcp serve` trực tiếp (case macOS/Windows-native).
+
+> **Sửa lại (2026-07-03, smoke-test thật phát hiện)**: nhận định cũ "`markitdown` không cần path cá nhân nên giữ `uvx` trực tiếp, không cần bridge" **sai lý do** — bridge không chỉ vì path cá nhân (XML/PDF library), mà vì **`uvx` có tồn tại trên PATH của process đang gọi hay không**. Máy chọn case Windows+WSL thường **không cài `uv`/`uvx` trên Windows native** (chỉ cài trong WSL) → `markitdown` nếu giữ `command: uvx` trực tiếp sẽ **lỗi ngay khi khởi động MCP** (`uvx` not found). Test thật xác nhận: `where uvx` trên Windows native của máy dev → not found; nhưng `wsl.exe -d Debian -e bash -lc "uvx markitdown-mcp"` → handshake OK (`serverInfo: markitdown v1.8.1`). **Quyết định đúng**: mọi server `uvx`-based (kể cả `markitdown`, không riêng `endnote-mcp`) bridge theo **cùng `os_profile`/`wsl_distro`** của máy — không có server nào "miễn bridge".
+
+### Platform case — macOS / Windows native / Windows+WSL
+
+`get_config_dir()` trong `config.py` chọn default dir theo **process nào đang chạy `serve`** (`platform.system()`), không theo máy vật lý — nên "Windows + WSL" là 1 case launcher riêng, không tự nhiên hoạt động chỉ vì cài `uv` trong WSL.
+
+**Windows — hỏi native hay WSL trước, không mặc định**: khi `os_profile` detect/khai là Windows và chưa có quyết định lưu, agent hỏi user chọn 1 trong 2, kèm phân tích ngắn lợi/hại:
+
+| # | Lựa chọn | Ưu | Nhược |
+|---|----------|-----|-------|
+| **1** | **Windows native** | Đơn giản nhất — `.mcp.json` bare 3 dòng giống macOS, không cần bridge, không cần cài thêm WSL | Nếu user vốn quen làm việc trong môi trường Linux/WSL cho các tool khác thì tách biệt, không tận dụng được |
+| **2** | **Windows + WSL bridge** | Môi trường Linux quen thuộc hơn nếu user đã dùng WSL cho dev việc khác; tránh 1 số edge-case path/encoding riêng của Windows | Thêm 1 lớp bridge (`wsl.exe` launcher) phải đúng 3 điểm kỹ thuật (xem dưới); cần cài `uv` riêng trong WSL; path phải qua `/mnt/c/`; phức tạp hơn để debug; **chưa smoke-test thật** |
+
+- Lưu quyết định vào `.local/ENVIRONMENT.md` field `os_profile:` — chọn native thì giữ `windows`, chọn bridge thì đổi thành `wsl`
+- Không hỏi lại khi `os_profile` đã có giá trị
+
+| Case | `.mcp.json` command | Config.yaml nằm ở đâu | Ghi chú | Đã smoke-test thật? |
+|---|---|---|---|---|
+| **macOS** | `uvx endnote-mcp serve` (bare) | `~/Library/Application Support/endnote-mcp/config.yaml` | Mặc định, không cần bridge | **Chưa** — xem §Mac status verify dưới |
+| **Windows native** | `uvx endnote-mcp serve` (bare) | `%APPDATA%\endnote-mcp\config.yaml` | Mặc định, `uv`/`uvx` cài thẳng trên Windows | Chưa (nhưng cùng cơ chế bare như Mac — rủi ro thấp hơn) |
+| **Windows + WSL bridge** | `wsl.exe` làm launcher — xem dưới | `~/.config/endnote-mcp/config.yaml` **bên trong WSL** (Linux path, vì process con là Linux) | Chỉ dùng khi muốn `serve` chạy hẳn trong WSL thay vì Windows native | **Có** — handshake JSON-RPC thật 2026-07-03, `docs/raws/2026-07-03-endnote-mcp-verify-report.md` §7 |
+
+### Mac — status verify (T-002, `.context/TENSIONS_OPEN.md`)
+
+**Mac là persona chính** (§1 "OS") nhưng **chưa có 1 lần chạy thật nào** — mọi điểm dưới đây chỉ verify qua đọc source code thật (`config.py`/`cli.py`, package `endnote_mcp==1.4.8`), không phải test trên máy Mac. Gom lại 1 chỗ để không phải lục rải rác:
+
+| Điểm | Biết gì (qua source code) | Chưa biết (cần máy Mac thật) |
+|---|---|---|
+| Config path | `get_config_dir()` → `~/Library/Application Support/endnote-mcp/config.yaml` khi `platform.system()=="Darwin"` | Chưa xác nhận `setup` wizard ghi đúng path này trên máy Mac thật |
+| Cài `uv`/`uvx` | Không có sẵn trên Mac mặc định (giống Windows) | Chưa có hướng dẫn cài (`brew install uv` hay curl script) trong bất kỳ guide nào — **gap, chưa từng ghi ở đâu** |
+| `setup` wizard scan XML/PDF | Source có logic bỏ qua `iCloud`/`.Library` để tránh treo máy (`_find_or_ask_xml`/`_find_or_ask_pdf_dir`) | Chưa test với iCloud Drive bật thật — không biết heuristic có thực sự tránh treo/miss path không |
+| `endnote-mcp install` (đăng ký Claude Desktop) | `_install_claude_desktop()` ghi vào `~/Library/Application Support/Claude/claude_desktop_config.json` | Chưa chạy thật `endnote-mcp install` trên Mac |
+
+**Quy trình cập nhật khi có máy Mac thật** (chốt 2026-07-03): người test thật chạy onboarding → phát hiện sai lệch so với bảng trên → sửa qua **PR** (không sửa thẳng `main`/`master`) → cập nhật lại bảng này với cột "Đã smoke-test thật?" ở trên.
+
+**Windows + WSL — `.mcp.json`**:
+
+```json
+{
+  "mcpServers": {
+    "endnote-mcp": {
+      "command": "wsl.exe",
+      "args": ["-d", "Debian", "-e", "bash", "-lc", "uvx endnote-mcp serve"]
+    }
+  }
+}
+```
+
+**3 điểm bắt buộc đúng khi dùng case này**:
+
+| Điểm | Vì sao | Cách đúng |
+|---|---|---|
+| `-d <Distro>` chỉ định rõ tên distro | Không có `-d` → dùng default distro của máy, đổi default sau là vỡ config im lặng | Pin cứng tên distro trong `args` |
+| `bash -lc "..."` chứ không `-e uvx` thẳng | `-e` không chạy login shell → không source `.bashrc`/`.profile` → `uvx` (cài ở `~/.local/bin`) không nằm trong PATH → lỗi "command not found" | Bắt buộc `bash -lc` |
+| `uv`/`uvx` cài **bên trong WSL** riêng | Cài trên Windows native không giúp gì — 2 PATH tách biệt hoàn toàn, không kế thừa | Trong WSL: `curl -LsSf https://astral.sh/uv/install.sh \| sh` |
+
+**Path dữ liệu (case Windows+WSL)**: EndNote desktop chạy trên Windows, xuất XML/PDF vào path Windows — `config.yaml` (ghi bên trong WSL) trỏ:
+
+- `endnote_xml`, `pdf_dir` → qua `/mnt/c/Users/<user>/...` (DrvFs, đọc được, chấp nhận chậm hơn native chút)
+- `db_path` → **để mặc định**, không override sang `/mnt/c/...` — SQLite nên nằm native ext4 (`~/.config/endnote-mcp/library.db`) để tránh file-locking issue trên DrvFs
+
+stdio (JSON-RPC qua stdin/stdout) — `wsl.exe` forward pipe bình thường khi bị spawn làm subprocess con, không cần cấu hình thêm.
+
+> **Smoke-test thật đã xác nhận** (2026-07-03) — gửi JSON-RPC `initialize` qua stdin xuyên `wsl.exe → bash -lc → uvx → endnote-mcp serve`, nhận đúng response MCP protocol (`serverInfo`, `capabilities`). Bridge hoạt động đúng — chi tiết `docs/raws/2026-07-03-endnote-mcp-verify-report.md` §7.
+>
+**Git — `.mcp.json` là file sinh ra từ template (CHỐT 2026-07-03)**: `.mcp.json` chứa giá trị riêng máy (tên distro WSL) nên **không track git**. Cơ chế:
+
+| File | Track git? | Vai trò |
+|---|---|---|
+| `.mcp.json.tpl` | **Có** — commit | Canonical bare skeleton (macOS/Windows-native mặc định). Nguồn để render |
+| `.mcp.json` | **Không** — trong `.gitignore` | File thật MCP client đọc, sinh ra từ `.tpl` lúc onboarding/setup, mỗi máy khác nhau tuỳ case |
+
+- Onboarding: nếu `.mcp.json` chưa tồn tại → copy nguyên `.mcp.json.tpl` → `.mcp.json`
+- Case Windows+WSL bridge: sau khi chọn xong distro (`.local/ENVIRONMENT.md wsl_distro`) → agent sửa `.mcp.json` (đã sinh từ template) — thay block `endnote-mcp` bằng bridge form bake `-d <wsl_distro>` — **không sửa `.mcp.json.tpl`**
+- Máy đổi distro sau này: sửa `.mcp.json` trực tiếp (không phải template) + `wsl_distro:` cùng lúc
+
+**Chọn distro — hỏi lúc onboarding case Windows+WSL, không áp đặt**:
+
+1. Agent check distro đã cài chưa: `wsl -l -v` (read-only, an toàn để tự chạy)
+2. **Chưa có distro nào** → hướng dẫn cài: `wsl --install -d Debian` (đề xuất Debian vì nhẹ, phổ biến cho dev — không bắt buộc)
+3. **Đã có 1+ distro** → hỏi user muốn dùng distro nào trong số đã cài (không ép đổi sang Debian nếu đã có sẵn Ubuntu/khác)
+4. Sau khi chốt tên distro → ghi **1 lần** vào `.local/ENVIRONMENT.md` field `wsl_distro:` — coi là **fact của máy local**, không hỏi lại
+5. Agent tự sửa `.mcp.json` **của máy này** — bake tên distro thật vào `args` (`-d <wsl_distro>`) theo template ở trên
+
+**Hệ quả cần biết**: `.mcp.json` ở case Windows+WSL sẽ **khác** với bare-skeleton macOS/Windows-native — đây là divergence *mong đợi*, không phải conflict governance (mỗi bác sĩ 1 máy, 1 clone repo riêng — không phải nhiều người share chung 1 `.mcp.json` runtime). Nếu máy đổi distro sau này, sửa lại `wsl_distro:` + `.mcp.json` cùng lúc.
 
 ## 2. Paper mới
 

@@ -1,8 +1,11 @@
-# research-helper
+# MedKarute (メドカルテ) - research-helper
+
+**AI Orchestrator + Amanuensis for Research**
+研究を支えるAIオーケストレーターと書記
 
 > **English**: [README.md](../../README.md) (canonical)
 
-**research-helper** là chat-driven research assistant: agent (orchestrator) điều phối workflow nghiên cứu qua chat, ghi kết quả vào file Markdown trong `research/{slug}/`, và gọi hai MCP — **MarkItDown** (PDF mới) và **endnote-mcp** (thư viện EndNote đã curate). Governance (`AGENTS.md`, `CLAUDE.md`, `docs/`) mô tả cách agent hoạt động; dữ liệu nghiên cứu tách riêng per-project.
+**MedKarute** (trước gọi `research-helper`) là chat-driven research assistant: agent (orchestrator) điều phối workflow nghiên cứu qua chat, ghi kết quả vào file Markdown trong `research/{slug}/`, và gọi hai MCP — **MarkItDown** (PDF mới) và **endnote-mcp** (thư viện EndNote đã curate). Governance (`AGENTS.md`, `CLAUDE.md`, `docs/`) mô tả cách agent hoạt động; dữ liệu nghiên cứu tách riêng per-project.
 
 ## Bắt đầu
 
@@ -16,27 +19,34 @@
 
 ## Workflow (sơ lược)
 
-```mermaid
-flowchart LR
-    PDF[PDF mới] --> PN[paper note]
-    CHAT[phiên chat] --> SES[session note]
-    PN --> EN[EndNote via user]
-    EN --> PN
-    PN --> INS[insight]
-    SES --> INS
-    INS --> WRT[writing]
+```
+                         +------------------+
+                         | EndNote via user |
+                         +--------+---------+
+                                  ^
+                                  |
+  +---------+              +------+--------+              +-------------+
+  | PDF mới |------------->|   paper note  |------------->|   insight   |
+  +---------+              +---------------+              +------+------+
+                                                                  |
+  +--------------+         +---------------+                     |
+  |  phiên chat  |-------->| session note  |---------------------+
+  +--------------+         +---------------+                     |
+                                                                  v
+                                                           +-------------+
+                                                           |   writing   |
+                                                           +-------------+
 ```
 
 Chi tiết artifact, INDEX, git per-project → [00-overview.md](../guides/research/00-overview.md).
 
 ## Công cụ & vai trò
 
-| Công cụ | Vai trò trong research-helper |
+| Công cụ | Vai trò trong MedKarute |
 |---------|-------------------------------|
 | **MarkItDown MCP** | Convert PDF mới → Markdown token-efficient cho agent đọc (paper chưa vào EndNote) |
 | **endnote-mcp** | Đọc thư viện EndNote đã curate — search, đọc PDF sâu, format citation/bibliography. Read-only (write qua EndNote desktop) |
-| **whyschools** ([research-helper.md](../raws/research-helper.md)) | Blog nguồn cảm hứng ban đầu cho ý tưởng kết hợp MarkItDown + endnote-mcp — **không phải dependency chạy**, chỉ tham khảo thiết kế |
-| **context-mapping pattern** ([agent-memory-and-load-protocol.md](../raws/agent-memory-and-load-protocol.md) §0, từ skvn-marine) | Kiến trúc `.context/` (GLOBAL/MILESTONES/TENSIONS/modules) — convention quản lý AI memory, **không phải tool cài đặt** |
+| **[WhySchools / context-mapping](https://github.com/WhySchools/context-mapping)** (context-gen) | **Cùng một nguồn** — workflow agentic *Human is the brain* của [WhySchools](https://github.com/WhySchools): bộ nhớ dự án trong `.context/` (GLOBAL, MILESTONES, TENSIONS, modules). Repo này áp dụng layout governance đó → [`.context/GLOBAL.md`](../../.context/GLOBAL.md). Brainstorm MCP sớm lưu tại [`research-helper.md`](../raws/research-helper.md). **Không phải dependency chạy** khi làm nghiên cứu hằng ngày |
 | **Markpad** | App mở file `.md` local cho user xem note — không phải MCP, chỉ viewer |
 
 ## Link nhanh

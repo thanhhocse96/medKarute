@@ -1,8 +1,11 @@
-# research-helper
+# MedKarute (メドカルテ) - research-helper
+
+**AI Orchestrator + Amanuensis for Research**
+研究を支えるAIオーケストレーターと書記
 
 > **Languages**: [Tiếng Việt](docs/readme/README.vi.md) — more in [docs/readme/](docs/readme/) (human-only, not in agent load map)
 
-**research-helper** is a chat-driven research assistant: an agent (orchestrator) runs the research workflow via chat, writes results to Markdown under `research/{slug}/`, and calls two MCP servers — **MarkItDown** (new PDFs) and **endnote-mcp** (curated EndNote library). Governance (`AGENTS.md`, `CLAUDE.md`, `docs/`) defines how the agent behaves; research data lives in separate per-project folders.
+**MedKarute** (formerly `research-helper`) is a chat-driven research assistant: an agent (orchestrator) runs the research workflow via chat, writes results to Markdown under `research/{slug}/`, and calls two MCP servers — **MarkItDown** (new PDFs) and **endnote-mcp** (curated EndNote library). Governance (`AGENTS.md`, `CLAUDE.md`, `docs/`) defines how the agent behaves; research data lives in separate per-project folders.
 
 ## Getting started
 
@@ -16,27 +19,34 @@
 
 ## Workflow (overview)
 
-```mermaid
-flowchart LR
-    PDF[New PDF] --> PN[paper note]
-    CHAT[chat session] --> SES[session note]
-    PN --> EN[EndNote via user]
-    EN --> PN
-    PN --> INS[insight]
-    SES --> INS
-    INS --> WRT[writing]
+```
+                         +------------------+
+                         | EndNote via user |
+                         +--------+---------+
+                                  ^
+                                  |
+  +---------+              +------+--------+              +-------------+
+  | New PDF |------------->|   paper note  |------------->|   insight   |
+  +---------+              +---------------+              +------+------+
+                                                                  |
+  +--------------+         +---------------+                     |
+  | chat session |-------->| session note  |---------------------+
+  +--------------+         +---------------+                     |
+                                                                  v
+                                                           +-------------+
+                                                           |   writing   |
+                                                           +-------------+
 ```
 
 Artifacts, INDEX routing, per-project git → [docs/guides/research/00-overview.md](docs/guides/research/00-overview.md).
 
 ## Tools & roles
 
-| Tool | Role in research-helper |
+| Tool | Role in MedKarute |
 |------|-------------------------|
 | **MarkItDown MCP** | Convert new PDFs → token-efficient Markdown for the agent (papers not yet in EndNote) |
 | **endnote-mcp** | Read curated EndNote library — search, deep PDF read, citation/bibliography. Read-only (writes via EndNote desktop) |
-| **whyschools** ([`docs/raws/research-helper.md`](docs/raws/research-helper.md)) | Original design inspiration for combining MarkItDown + endnote-mcp — **not a runtime dependency**, reference only |
-| **context-mapping pattern** ([`docs/raws/agent-memory-and-load-protocol.md`](docs/raws/agent-memory-and-load-protocol.md) §0, from skvn-marine) | `.context/` architecture (GLOBAL/MILESTONES/TENSIONS/modules) — AI memory convention, **not an installable tool** |
+| **[WhySchools / context-mapping](https://github.com/WhySchools/context-mapping)** (context-gen) | **Same lineage** — [WhySchools](https://github.com/WhySchools) *Human is the brain* agentic workflow: shared memory in `.context/` (GLOBAL, MILESTONES, TENSIONS, modules). This repo adopts that governance layout → [`.context/GLOBAL.md`](.context/GLOBAL.md). Early MCP brainstorm archived in [`docs/raws/research-helper.md`](docs/raws/research-helper.md). **Not a runtime dependency** for research sessions |
 | **Markpad** | Local `.md` viewer for the user — not an MCP, viewer only |
 
 ## Quick links
@@ -47,3 +57,4 @@ Artifacts, INDEX routing, per-project git → [docs/guides/research/00-overview.
 | [CLAUDE.md](CLAUDE.md) | Orchestrator playbook |
 | [docs/guides/research/00-overview.md](docs/guides/research/00-overview.md) | `research/` workflow detail |
 | [docs/decisions/endnote-workflow.md](docs/decisions/endnote-workflow.md) | EndNote workflow (canonical) |
+| [CONTRIBUTING.md](CONTRIBUTING.md) | Đóng góp — test thật, báo lỗi, sửa governance |

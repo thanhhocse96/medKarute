@@ -1,4 +1,4 @@
-# GLOBAL — research-helper
+# GLOBAL — MedKarute
 
 > AI memory dùng chung (commit). Cập nhật khi có invariant mới hoặc promote từ phiên chat.
 
@@ -11,6 +11,14 @@
 - EndNote MCP: orchestrator-only; read-heavy; write library qua user
 - Mermaid bắt buộc cho diagram trong session/workflow doc
 - Governance (`CLAUDE.md`, `AGENTS.md`, `docs/decisions/`) chỉ sửa khi phiên **đề cập** rõ
+- **Tagline cố định đầu mọi README** (root + `docs/readme/*`), copy nguyên văn, không dịch/đổi thêm:
+  ```
+  # MedKarute (メドカルテ) - research-helper
+
+  **AI Orchestrator + Amanuensis for Research**
+  研究を支えるAIオーケストレーターと書記
+  ```
+  Chốt 2026-07-03 (user) — thêm locale README mới cũng phải có khối này ở đầu
 
 ## Module index
 

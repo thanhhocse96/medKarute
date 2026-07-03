@@ -1,4 +1,4 @@
-# CLAUDE.md — research-helper orchestrator
+# CLAUDE.md — MedKarute orchestrator
 
 > Playbook cho model chính (orchestrator). Invariants ngắn → `AGENTS.md`. Startup order → `AGENTS.md` §1.
 

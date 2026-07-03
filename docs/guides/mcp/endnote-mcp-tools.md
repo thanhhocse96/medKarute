@@ -2,10 +2,20 @@
 
 > Vận hành. Quyết định canonical → `docs/decisions/endnote-workflow.md`. Machine state → `.local/mcp/endnote.md`.
 
+## Cài đặt — `uv`/`uvx` (QA1, lấp gap 2026-07-03)
+
+`endnote-mcp` và `markitdown-mcp` đều chạy qua `uvx` — không có sẵn mặc định trên máy nào (Mac/Windows/Linux). Cài 1 lần lúc setup máy:
+
+- **Mac**: `brew install uv` (khuyến nghị nếu đã có Homebrew) — hoặc `curl -LsSf https://astral.sh/uv/install.sh | sh` nếu chưa có brew
+- **Windows native**: `winget install --id=astral-sh.uv -e` — hoặc `pip install uv` nếu đã có Python
+- **WSL/Linux**: `curl -LsSf https://astral.sh/uv/install.sh | sh` — cài **bên trong** WSL, không kế thừa từ Windows native (xem case Windows+WSL trong `docs/decisions/endnote-workflow.md`)
+
+Verify: `uvx --version` chạy được không lỗi là xong. Nếu lệnh `uvx: command not found` sau khi cài — thường do PATH chưa load lại shell (đóng mở terminal lại, hoặc `source ~/.zshrc`/`~/.bashrc`).
+
 ## Prerequisite
 
 1. **Cấu hình endnote-mcp** (một lần — xem `docs/decisions/endnote-workflow.md §MCP config resolution`):
-   - `.mcp.json` bare: `uvx endnote-mcp serve` (không wrapper)
+   - `.mcp.json` sinh từ `.mcp.json.tpl` (gitignored, không commit — khác nhau tuỳ máy). Mặc định bare `uvx endnote-mcp serve`; case Windows+WSL bridge sửa riêng, không sửa `.tpl`
    - Nếu `.local/mcp/endnote.md` chưa có `setup_method` → orchestrator hỏi user chọn **native** (`endnote-mcp setup` wizard) hoặc **agent** (agent ghi `config.yaml` vào default platform dir theo `os_profile`)
    - Cả 2 nhánh kết thúc bằng `config.yaml` ở default platform dir; lưu `setup_method` vào `.local/mcp/endnote.md`
 2. User export EndNote library ra **XML** (đường dẫn cố định — ghi `.local/mcp/endnote.md` `xml_export_path`)

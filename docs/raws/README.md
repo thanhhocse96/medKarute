@@ -26,10 +26,22 @@
 
 ---
 
+## Đọc nhanh
+
+| Mục đích đọc | File |
+|--------------|------|
+| **Vì sao** thiết kế như vậy (tư duy) | [`2026-07-03-SUMMARY.md`](2026-07-03-SUMMARY.md) |
+| **Dự án là gì, workflow, ai làm gì** (vận hành; văn phong dễ đọc, ví dụ y khoa) | [`2026-07-03-GIOI-THIEU-VA-WORKFLOW.md`](2026-07-03-GIOI-THIEU-VA-WORKFLOW.md) |
+| Spec kỹ thuật đã duyệt | [`2026-07-03-APPROVAL-DRAFT.md`](2026-07-03-APPROVAL-DRAFT.md) |
+
+---
+
 ## Bảng trạng thái từng file (cập nhật 2026-07-03)
 
 | File | Trạng thái | Tóm tắt đã chốt (nếu có) |
 |---|---|---|
+| **`2026-07-03-SUMMARY.md`** | Hành trình tư duy | Narrative: vì sao thiết kế như vậy |
+| **`2026-07-03-GIOI-THIEU-VA-WORKFLOW.md`** | **Giới thiệu + workflow** | Dự án là gì; cast; 7 workflow (A–G); thuật ngữ đời thường + ví dụ lâm sàng/journal club |
 | `research-helper.md` | Brainstorm gốc — **đã bị thay thế một phần** | MCP + 12 tools endnote-mcp vẫn đúng (nguồn cho `docs/guides/mcp/endnote-mcp-tools.md`). Phần note-taking kiểu Obsidian/`notes/literature/` **đã bỏ** — xem APPROVAL-DRAFT §3.2 (đổi tên `papers/`, `insights/`, `writing/`) |
 | `2026-07-03-claude-agents-design-synthesis.md` | **Lịch sử chat — không phải spec** | Cấu trúc cũ (`notes/literature/`, `drafts/`, `synthesis/`) đã bị **APPROVAL-DRAFT ghi đè**. Chỉ đọc để hiểu tại sao chốt vậy, không lấy tên thư mục từ đây |
 | `2026-07-03-APPROVAL-DRAFT.md` | **CHỐT — cấu trúc chính** (chờ 1 lệnh "viết" để ghi ra file thật) | Cấu trúc `research/{slug}/` (papers/sessions/insights/writing), 2 lớp file governance vs research, git local per-project + auto-commit, INDEX phân tầng, onboarding hỏi trước khi mkdir, docs-lại protocol, Mermaid bắt buộc. Checklist duyệt cuối file — mọi mục đã tick |
@@ -38,7 +50,8 @@
 | `deferred-gaps-nonblocking.md` | **Sổ tay default tạm** — không phải quyết định cần duyệt, mà là danh sách "đừng chặn governance vì gap này" | Mỗi gap có default + lý do defer. Cập nhật cột "Default" nếu có quyết định mới, đừng xoá dòng |
 | `agent-memory-and-load-protocol.md` | **Phần lớn đã chốt qua deferred-gaps** | Không có `AGENT_SHARED.md`; promote thẳng vào file dự án theo bảng §3.3; `.local/claude-agent-summary.md` chỉ là cache. Câu hỏi M2–M5 còn treo trong file này **đã có default** ở `deferred-gaps-nonblocking.md` (M1, M2, G4) |
 | `2026-07-03-generalization-review-workflow.md` | **Brainstorm đã chốt kỹ (3 vòng phản biện) nhưng NGOÀI milestone 0.0.1** | Toàn bộ thiết kế QUESTIONS.md review loop hợp lệ để dùng sau — **không** promote lượt governance hiện tại. Xem `deferred-gaps-nonblocking.md` §R1 |
-| `2026-07-03-governance-promotion-plan.md` | **Đã thực thi** (2026-07-03) | Governance đã promote — xem file list §1; smoke test onboarding khi tạo project thật |
+| `2026-07-03-governance-promotion-plan.md` | **Đã thực thi** (2026-07-03); **T-001 cập nhật** (2026-07-03) | Governance đã promote — xem file list §1; QA4 wrapper supersede bởi T-001 (bare `.mcp.json` + onboarding 2-lựa-chọn) — xem dòng trạng thái cuối file |
+| `2026-07-03-endnote-mcp-verify-report.md` | **CHỐT — bằng chứng T-001** | Verify source `endnote_mcp==1.4.8`: `serve` không flag; `Config.load()` fallback default platform dir; wrapper dư thừa. Quyết định → `.context/TENSIONS_ACTIVE.md` T-001 |
 
 ---
 

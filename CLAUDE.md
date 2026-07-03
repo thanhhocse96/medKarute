@@ -127,6 +127,17 @@ flowchart TD
 
 Ghi vào `README.md`. Cập nhật `.local/session.md`, `known_projects.txt`.
 
+### EndNote MCP setup (khi phiên cần)
+
+Khi phiên cần EndNote MCP mà `.local/mcp/endnote.md` chưa có `setup_method` — hỏi user chọn 1 trong 2 (kèm tóm tắt lợi/hại, **không viết lại khác** bảng trong `docs/decisions/endnote-workflow.md §MCP config resolution`):
+
+| # | Lựa chọn | Cách làm | Ưu | Nhược |
+|---|----------|----------|-----|-------|
+| **1** | **Setup thủ công (native wizard)** | User tự mở terminal, chạy `endnote-mcp setup` — 1 lần lúc cài máy. Tool tự tìm XML/PDF dir (heuristic có sẵn, tốt hơn agent đoán), tự ghi `config.yaml` default dir | Chịu khó 1 lần, nhưng **dễ kiểm soát** (đúng tool gốc, auto-detect mạnh), **tiết kiệm** — không tốn token agent | Cần tự tay mở terminal, đọc prompt tiếng Anh cơ bản |
+| **2** | **Agent làm hộ (qua chat)** | Agent hỏi path XML/PDF trong chat → tự ghi trực tiếp `config.yaml` vào đúng default platform dir (biết trước theo `os_profile` trong `.local/ENVIRONMENT.md`) → tự chạy `index` | **Nhàn** — không đụng terminal, hoàn toàn qua chat | **Tốn token** (agent xử lý path, lỗi format, retry); **khó kiểm soát hơn** — không có auto-detect mạnh như wizard, rủi ro path sai mà agent không phát hiện ngay |
+
+Sau khi user chọn: ghi `setup_method: native | agent` vào `.local/mcp/endnote.md`. Nếu `native` — hướng dẫn 1 lần, chờ xác nhận `config.yaml` ở default dir. Nếu `agent` — hỏi path, ghi `config.yaml`, chạy `index`. Không hỏi lại khi đã có `setup_method`.
+
 ## H. Response style
 
 - **Semi-tech**: nói thẳng orchestrator, subagent, MCP, INDEX

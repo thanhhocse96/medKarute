@@ -4,12 +4,18 @@
 
 ## Prerequisite
 
-1. User export EndNote library ra **XML** (đường dẫn cố định — ghi `.local/mcp/endnote.md`)
-2. Orchestrator chạy `index` (lần đầu) hoặc `index` incremental (sau thay đổi)
-3. **Mọi thay đổi library = re-export XML + index** — bước dễ quên nhất
+1. **Cấu hình endnote-mcp** (một lần — xem `docs/decisions/endnote-workflow.md §MCP config resolution`):
+   - `.mcp.json` bare: `uvx endnote-mcp serve` (không wrapper)
+   - Nếu `.local/mcp/endnote.md` chưa có `setup_method` → orchestrator hỏi user chọn **native** (`endnote-mcp setup` wizard) hoặc **agent** (agent ghi `config.yaml` vào default platform dir theo `os_profile`)
+   - Cả 2 nhánh kết thúc bằng `config.yaml` ở default platform dir; lưu `setup_method` vào `.local/mcp/endnote.md`
+2. User export EndNote library ra **XML** (đường dẫn cố định — ghi `.local/mcp/endnote.md` `xml_export_path`)
+3. Orchestrator chạy `index` (lần đầu) hoặc `index` incremental (sau thay đổi)
+4. **Mọi thay đổi library = re-export XML + index** — bước dễ quên nhất
 
 ```mermaid
 flowchart TD
+    SETUP[Onboarding: native hoặc agent] --> CFG[config.yaml default platform dir]
+    CFG --> SERVE[uvx endnote-mcp serve]
     EN[EndNote desktop] -->|export XML| XML[file XML]
     XML --> MCP[endnote-mcp index]
     MCP --> DB[(SQLite index)]

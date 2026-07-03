@@ -12,32 +12,48 @@
 | Lần đầu index | `index` (đủ khi chưa có DB); `rebuild_index` khi index hỏng |
 | Log | `.local/mcp/endnote-index.log` — timestamp, lệnh, số ref, thời gian, kết quả |
 | Semantic | **BM25 trước** (`search_library`). Bật semantic khi library > ~100 ref hoặc `semantic_miss_count` chạm ngưỡng |
-| MCP config | `.mcp.json` → wrapper `tools/mcp-wrappers/run-endnote-mcp.sh`; path từ `.local/mcp/endnote.md` — xem §MCP config resolution |
+| MCP config | `.mcp.json` bare `uvx endnote-mcp serve`; `config.yaml` ở default platform dir — onboarding chọn `setup_method` — xem §MCP config resolution |
 
 **Nguyên tắc**: Mọi thứ check được bằng file/mtime → agent tự check; chỉ hỏi khi cần hành động user (export XML, add reference).
 
 ## MCP config resolution
 
-**Vấn đề**: `.mcp.json` skeleton ban đầu dùng `ENDNOTE_XML_PATH` — bác sĩ semi-tech không nên `export` trong terminal; biến đó cũng **không tồn tại** trong `endnote-mcp` thật (verify 2026-07-03).
+**Bối cảnh** (verify 2026-07-03, `endnote_mcp==1.4.8` — xem `docs/raws/2026-07-03-endnote-mcp-verify-report.md`, `.context/TENSIONS_ACTIVE.md` T-001): `endnote-mcp serve` không nhận flag; `Config.load()` tự tìm `config.yaml` ở **default platform dir** (`~/Library/Application Support/endnote-mcp/` Mac, `%APPDATA%\endnote-mcp\` Win, `~/.config/endnote-mcp/` Linux) nếu không có `ENDNOTE_MCP_CONFIG`. Wizard `endnote-mcp setup` tự ghi đúng vào default dir này. Biến `ENDNOTE_XML_PATH` trong skeleton cũ **không tồn tại** trong package.
 
-| Phương án | Mô tả | Đánh giá |
-|-----------|-------|----------|
-| **A — env var thô** | User `export ENDNOTE_XML_PATH=...` trước khi mở client | Trái persona; env var không khớp tool |
-| **B — wrapper script** ★ | Script commit đọc `xml_export_path` từ `.local/mcp/endnote.md` → sinh `endnote-mcp-config.yaml` → `ENDNOTE_MCP_CONFIG` → `uvx endnote-mcp serve` | **Chọn** — không terminal; giữ `.mcp.json` commit-shaped; state vẫn ở `.local/` |
-| **C — path trong file commit** | Ghi path XML thật vào `.mcp.json` hoặc governance | Lộ path máy; drift khi đổi máy |
-| **D — tool tự đọc config** | `endnote-mcp` có `config.yaml` OS-default + `ENDNOTE_MCP_CONFIG`; `endnote-mcp setup` wizard | Có native config (v1.4.8) nhưng `serve` không nhận `--config`; wizard interactive — chưa đơn giản hơn wrapper cho persona này. Xem `.context/TENSIONS_OPEN.md` T-001 |
+**Quyết định** (T-001, 2026-07-03): **Bỏ wrapper script** — cả 2 hướng dưới đây đều kết thúc bằng `config.yaml` nằm đúng default platform dir, nên `.mcp.json` trở lại **bare**:
 
-```mermaid
-flowchart LR
-    MD[".local/mcp/endnote.md\nxml_export_path"]
-    WR["tools/mcp-wrappers/run-endnote-mcp.sh"]
-    YAML[".local/mcp/endnote-mcp-config.yaml"]
-    MCP["uvx endnote-mcp serve"]
-    MD --> WR --> YAML
-    WR -->|ENDNOTE_MCP_CONFIG| MCP
+```json
+{ "mcpServers": { "endnote-mcp": { "command": "uvx", "args": ["endnote-mcp", "serve"] } } }
 ```
 
-**Launcher**: `.mcp.json` gọi `bash tools/mcp-wrappers/run-endnote-mcp.sh` (Mac persona). Windows dev: `run-endnote-mcp.cmd` (delegate bash). `markitdown` giữ `uvx` trực tiếp.
+**Thiết kế — hỏi lúc onboarding, lưu lựa chọn, không hỏi lại**:
+
+Khi phiên đầu tiên cần EndNote MCP mà `.local/mcp/endnote.md` chưa có `setup_method` — agent hỏi trong chat, đưa 2 lựa chọn kèm phân tích ngắn lợi/hại:
+
+| # | Lựa chọn | Cách làm | Ưu | Nhược |
+|---|----------|----------|-----|-------|
+| **1** | **Setup thủ công (native wizard)** | User tự mở terminal, chạy `endnote-mcp setup` — 1 lần lúc cài máy. Tool tự tìm XML/PDF dir (heuristic có sẵn, tốt hơn agent đoán), tự ghi `config.yaml` default dir | Chịu khó 1 lần, nhưng **dễ kiểm soát** (đúng tool gốc, auto-detect mạnh), **tiết kiệm** — không tốn token agent | Cần tự tay mở terminal, đọc prompt tiếng Anh cơ bản |
+| **2** | **Agent làm hộ (qua chat)** | Agent hỏi path XML/PDF trong chat → tự ghi trực tiếp `config.yaml` vào đúng default platform dir (biết trước theo `os_profile` trong `.local/ENVIRONMENT.md`) → tự chạy `index` | **Nhàn** — không đụng terminal, hoàn toàn qua chat | **Tốn token** (agent xử lý path, lỗi format, retry); **khó kiểm soát hơn** — không có auto-detect mạnh như wizard, rủi ro path sai mà agent không phát hiện ngay |
+
+- Lưu lựa chọn: field `setup_method: native | agent` trong `.local/mcp/endnote.md`
+- Nếu `native`: agent chỉ hướng dẫn 1 lần, chờ user xác nhận đã chạy xong (check `config.yaml` tồn tại ở default dir), không tự ghi gì
+- Nếu `agent`: agent hỏi path trong chat → tự ghi `config.yaml` (4 field: `endnote_xml`, `pdf_dir`, `db_path`, `max_pdf_pages: 30`) vào default dir theo `os_profile` → tự `index`
+- Cả 2 nhánh: sau khi có `config.yaml`, mọi thứ khác (mtime check, re-index, v.v.) giữ nguyên như §2–§8 — không đổi gì
+
+```mermaid
+flowchart TD
+    NEED[Phiên cần EndNote MCP] --> CHECK{setup_method\ncó trong endnote.md?}
+    CHECK -->|chưa| ASK[Hỏi user: native hay agent]
+    ASK --> NATIVE[native: hướng dẫn endnote-mcp setup]
+    ASK --> AGENT[agent: hỏi path → ghi config.yaml]
+    CHECK -->|đã có| BRANCH{setup_method}
+    NATIVE --> YAML["config.yaml\ndefault platform dir"]
+    AGENT --> YAML
+    BRANCH --> YAML
+    YAML --> MCP["uvx endnote-mcp serve\n(.mcp.json bare)"]
+```
+
+**Launcher**: `.mcp.json` gọi `uvx endnote-mcp serve` trực tiếp. `markitdown` giữ `uvx` trực tiếp.
 
 ## 2. Paper mới
 
@@ -103,8 +119,9 @@ Fallback search: `search_library` → semantic → hỏi user thêm từ khóa.
 ### Schema `.local/mcp/endnote.md`
 
 ```
+setup_method:             # native | agent — lựa chọn onboarding, không hỏi lại
 xml_export_path:
-pdf_dir:                  # optional — wrapper heuristic .Data/PDF nếu trống
+pdf_dir:                  # optional — sync từ config.yaml hoặc user cung cấp
 sqlite_index_path:
 library_name:
 last_xml_export:

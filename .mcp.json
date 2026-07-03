@@ -1,0 +1,16 @@
+{
+  "_todo": "Verify syntax when MCP setup is tested on target machine",
+  "mcpServers": {
+    "endnote-mcp": {
+      "command": "uvx",
+      "args": ["endnote-mcp"],
+      "env": {
+        "ENDNOTE_XML_PATH": "${ENDNOTE_XML_PATH}"
+      }
+    },
+    "markitdown": {
+      "command": "uvx",
+      "args": ["markitdown-mcp"]
+    }
+  }
+}

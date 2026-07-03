@@ -19,7 +19,7 @@ Mỗi phiên mới, đọc theo thứ tự:
 7. `.local/session.md` — `active_project`, `pending_actions`
 8. `.local/claude-agent-summary.md` — nếu stale thì refresh (xem CLAUDE §F)
 
-Không load mặc định: `docs/raws/`, `docs/ideations/` scratch, `*HISTORY*`.
+Không load mặc định: `docs/raws/`, `docs/readme/` (README locale — human-only), `docs/ideations/` scratch, `*HISTORY*`.
 
 ## §2 Invariants
 

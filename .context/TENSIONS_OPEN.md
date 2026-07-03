@@ -19,3 +19,5 @@
 - Hoặc sau onboarding agent ghi thẳng `config.yaml` OS-default + bỏ wrapper — cần đồng bộ 2 nguồn với `endnote.md`
 
 **Cần user quyết**: Có muốn thử phương án D (agent sync vào OS `config.yaml` lúc onboarding) thay wrapper không?
+
+**Bổ sung (Claude QA, 2026-07-03)** — verify độc lập qua web search (máy dev không có `uv`/`uvx` để re-run trực tiếp `--help`): xác nhận repo thật `github.com/gokmengokhan/endnote-mcp`, field config khớp chính xác (`endnote_xml`, `pdf_dir`, `db_path`, `max_pdf_pages=30`) — bằng chứng Grok đưa ra đáng tin. Thêm 1 phát hiện Grok chưa nhắc: package có lệnh **`endnote-mcp install`** — "register with Claude Desktop" tự động. Nếu đúng, có thể thay được cả wrapper lẫn sửa tay `.mcp.json`. Đáng verify thêm (`uvx endnote-mcp install --help`) trước khi chốt T-001.

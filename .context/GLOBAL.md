@@ -34,6 +34,8 @@
 - `docs/decisions/endnote-workflow.md`
 - `docs/templates/*.tpl` (7)
 
+**Không** trong active docs: `docs/raws/`, `docs/readme/` (README locale cho human — root `README.md` EN là canonical).
+
 ## `modules/` — cách dùng
 
 Thư mục `.context/modules/` rỗng lúc bootstrap. Tạo file khi có invariant **theo module**, ví dụ:

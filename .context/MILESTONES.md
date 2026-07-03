@@ -15,4 +15,6 @@
 - [x] `.local/` scaffold (schema, không path máy thật)
 - [x] Onboarding smoke test: `research/1bitllm-world-model/` từ template + `git init` (2026-07-03)
 
-**Ngoài scope 0.0.1**: `insights/QUESTIONS.md` review loop; `tools/pack-share.sh` code; `huong-dan-su-dung.md`.
+**Ngoài scope 0.0.1**: `insights/QUESTIONS.md` review loop; `tools/pack-share.sh` code.
+
+**Đã viết sau 0.0.1 (2026-07-03)**: `docs/guides/huong-dan-su-dung.md` — distill từ guide thật, sau khi đủ nội dung (đúng thứ tự đã defer).

@@ -8,7 +8,13 @@ Người dùng (kể cả không rành kỹ thuật) **không cần tự tay dù
 
 ### 1. Agent test thật, tự sửa, tự lặp
 
-Agent chạy thử thật trên máy — đặc biệt case chưa smoke-test (xem `.context/TENSIONS_OPEN.md`). Phát hiện sai lệch → tự sửa file → test lại. **Giới hạn: tối đa 3 vòng sửa+test cho cùng 1 vấn đề.** Quá 3 vòng vẫn lỗi → **dừng lại, báo cáo user** đã thử gì/lỗi gì — không tự lặp vô hạn (tốn token, tốn thời gian người dùng chờ).
+Agent chạy thử thật trên máy — đặc biệt case chưa smoke-test (xem `.context/TENSIONS_OPEN.md`). Phát hiện sai lệch → tự sửa file → test lại. **Giới hạn: tối đa 3 vòng sửa+test cho cùng 1 vấn đề.** Quá 3 vòng vẫn lỗi → **không đoán mù thêm** — chuyển sang bước 1b.
+
+### 1b. Quá 3 vòng vẫn chưa rõ — escalate research
+
+Áp dụng quy tắc chung `CLAUDE.md §K` (cảnh báo → đề xuất model mạnh hơn/Opus → research → trình bày plan → spawn agent thực thi). Trong ngữ cảnh test/PR, plan ở bước 4 khi user duyệt thì agent thực thi tiếp theo đúng bước 2–4 ở dưới (checklist ổn định → hỏi trước khi commit).
+
+*Ví dụ*: case Mac "GUI app không kế thừa PATH shell, `uvx` không thấy dù terminal thấy" — nếu 3 vòng sửa nhanh (thử absolute path, thử restart app) không dứt điểm, đây đúng loại vấn đề cần research sâu hơn thay vì đoán tiếp.
 
 ### 2. Tiêu chí "ổn định" — checklist tối thiểu, không phải "chạy được 1 lần là xong"
 

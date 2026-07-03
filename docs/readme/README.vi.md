@@ -15,7 +15,7 @@
 
 **Không có gì phức tạp.** Coding tool/IDE chỉ giúp nhìn file, diff, tree rõ hơn — bản chất vẫn là agent đọc các file `.md` đã commit. Dùng thuần CLI, không mở IDE, **vẫn chạy y hệt**; không phụ thuộc tool cụ thể.
 
-> `huong-dan-su-dung.md` (hướng dẫn distill cho end-user) — chưa viết, defer sau khi guide đủ nội dung.
+> Hướng dẫn sử dụng cho người nghiên cứu (không phải cho agent): [`docs/guides/huong-dan-su-dung.md`](../guides/huong-dan-su-dung.md).
 
 ## Workflow (sơ lược)
 

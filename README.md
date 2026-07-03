@@ -15,7 +15,7 @@
 
 **Nothing fancy.** A coding tool or IDE only makes files, diffs, and the tree easier to see — the agent still works from committed `.md` files. Plain CLI without an IDE **works the same**; no specific tool is required.
 
-> `huong-dan-su-dung.md` (distilled end-user guide) — not written yet; deferred until guides have real content.
+> End-user guide (distilled, for the researcher — not the agent): [`docs/guides/huong-dan-su-dung.md`](docs/guides/huong-dan-su-dung.md).
 
 ## Workflow (overview)
 

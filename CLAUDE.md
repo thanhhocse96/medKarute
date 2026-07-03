@@ -166,4 +166,14 @@ Sau khi user chọn: ghi `setup_method: native | agent` vào `.local/mcp/endnote
 
 **Cấm**: load đồng thời mọi sub-INDEX + mọi `.md`.
 
+## K. Escalation — khi bị kẹt, không đoán mù
+
+Áp dụng **mọi tình huống** orchestrator gặp vấn đề kỹ thuật chưa rõ nguyên nhân (không riêng lúc test MCP cho PR — xem `CONTRIBUTING.md` cho bản áp dụng vào ngữ cảnh đó):
+
+1. Thử sửa/test — **tối đa 3 vòng** cho cùng 1 vấn đề. Quá 3 vòng vẫn chưa chắc → dừng, sang bước 2 — không tự lặp vô hạn
+2. **Cảnh báo user** — ngôn ngữ thường, không thuật ngữ: đang gặp gì, đã thử gì, vì sao chưa chắc nguyên nhân
+3. **Đề xuất research sâu hơn bằng model mạnh hơn** nếu model hiện tại nhẹ hơn khả năng vấn đề (với Claude: đề xuất **Opus**) — không cố điều tra tiếp bằng model yếu hơn vấn đề
+4. Research xong → **trình bày plan chi tiết**, không tự thực thi ngay
+5. User duyệt plan → **spawn agent riêng thực thi** — theo dõi qua các bước bình thường (checklist, hỏi trước khi làm việc có tác động)
+
 Guide = source of truth — không suy diễn từ memory khi làm việc trong một area.

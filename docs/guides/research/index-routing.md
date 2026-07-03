@@ -40,6 +40,7 @@ Chỉ bảng 4 area + count + link sub-INDEX. **Không** bảng paper/session ch
 |------|------|
 | Orientation / phiên mới | `README.md` → root `INDEX.md` |
 | Paper ingest / đọc paper | `papers/INDEX.md` (+ 1 paper note nếu cần) |
+| Ingest nguồn **web** (không PDF) | [web-ingest.md](web-ingest.md) + `papers/INDEX.md` |
 | docs lại | `sessions/INDEX.md` |
 | Mental model | `insights/INDEX.md` + [insights.md](insights.md) |
 | Soạn section / prose | `writing/INDEX.md` + [writing.md](writing.md) |

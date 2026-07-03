@@ -16,3 +16,4 @@
 | Date | Case | Status | Tóm tắt |
 |------|------|--------|---------|
 | 2026-07-03 | [misa-amis-san-xuat-knowledge-translation](2026-07-03-misa-amis-san-xuat-knowledge-translation.md) | `project-created` | `research/amis-docs-digest/` — web ingest, knowledge translation |
+| 2026-07-03 | [web-ingest-manifest-token-efficient](2026-07-03-web-ingest-manifest-token-efficient.md) | `manifest-built` | Dựng manifest 83 bài từ helpamis bằng `curl` (tách kéo-về/đọc), sinh guide `web-ingest.md` |

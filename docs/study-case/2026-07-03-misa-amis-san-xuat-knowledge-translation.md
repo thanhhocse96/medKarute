@@ -139,7 +139,7 @@ Thay cột PDF / `endnote_id`:
 2. Mỗi insight có **bảng từ vựng** (ví dụ: "lệnh sản xuất" = "lệnh xưởng làm bao nhiêu sản phẩm")
 3. Writing layer: FAQ theo **việc cần làm**, không theo menu phần mềm
 
-**Đối tượng đọc** — chưa chốt; ảnh hưởng giọng văn (quản đốc / kế toán xưởng / chủ xưởng nhỏ).
+**Đối tượng đọc** — **đã chốt**: kế toán xưởng, chủ xưởng, nhân viên liên quan (thủ kho, điều phối SX, QC, mua hàng khi chạm quy trình SX).
 
 ---
 
@@ -204,7 +204,7 @@ Chỉ promote lên `docs/guides/research/` khi **≥2 project** cùng pattern ho
 ## 7. Open questions (chờ user)
 
 1. **Slug** — `amis-san-xuat-guide` hay `misa-amis-san-xuat`?
-2. **Đối tượng đọc** — quản đốc, kế toán xưởng, chủ xưởng nhỏ, hay mixed?
+2. ~~**Đối tượng đọc**~~ — **Done**: kế toán xưởng, chủ xưởng, nhân viên liên quan
 3. **Scope module** — chỉ AMIS Sản xuất hay cả Mua hàng + Kho?
 4. **Ngôn ngữ** — VI (mặc định phiên)?
 5. **Bắt đầu từ quy trình nào** — lập lệnh SX, kế hoạch tổng thể, hay tổng quan?

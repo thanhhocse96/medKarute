@@ -12,9 +12,32 @@
 | Lần đầu index | `index` (đủ khi chưa có DB); `rebuild_index` khi index hỏng |
 | Log | `.local/mcp/endnote-index.log` — timestamp, lệnh, số ref, thời gian, kết quả |
 | Semantic | **BM25 trước** (`search_library`). Bật semantic khi library > ~100 ref hoặc `semantic_miss_count` chạm ngưỡng |
-| MCP config | `.mcp.json` repo (command chung); path XML qua env / `.local` — verify khi setup thật |
+| MCP config | `.mcp.json` → wrapper `tools/mcp-wrappers/run-endnote-mcp.sh`; path từ `.local/mcp/endnote.md` — xem §MCP config resolution |
 
 **Nguyên tắc**: Mọi thứ check được bằng file/mtime → agent tự check; chỉ hỏi khi cần hành động user (export XML, add reference).
+
+## MCP config resolution
+
+**Vấn đề**: `.mcp.json` skeleton ban đầu dùng `ENDNOTE_XML_PATH` — bác sĩ semi-tech không nên `export` trong terminal; biến đó cũng **không tồn tại** trong `endnote-mcp` thật (verify 2026-07-03).
+
+| Phương án | Mô tả | Đánh giá |
+|-----------|-------|----------|
+| **A — env var thô** | User `export ENDNOTE_XML_PATH=...` trước khi mở client | Trái persona; env var không khớp tool |
+| **B — wrapper script** ★ | Script commit đọc `xml_export_path` từ `.local/mcp/endnote.md` → sinh `endnote-mcp-config.yaml` → `ENDNOTE_MCP_CONFIG` → `uvx endnote-mcp serve` | **Chọn** — không terminal; giữ `.mcp.json` commit-shaped; state vẫn ở `.local/` |
+| **C — path trong file commit** | Ghi path XML thật vào `.mcp.json` hoặc governance | Lộ path máy; drift khi đổi máy |
+| **D — tool tự đọc config** | `endnote-mcp` có `config.yaml` OS-default + `ENDNOTE_MCP_CONFIG`; `endnote-mcp setup` wizard | Có native config (v1.4.8) nhưng `serve` không nhận `--config`; wizard interactive — chưa đơn giản hơn wrapper cho persona này. Xem `.context/TENSIONS_OPEN.md` T-001 |
+
+```mermaid
+flowchart LR
+    MD[".local/mcp/endnote.md\nxml_export_path"]
+    WR["tools/mcp-wrappers/run-endnote-mcp.sh"]
+    YAML[".local/mcp/endnote-mcp-config.yaml"]
+    MCP["uvx endnote-mcp serve"]
+    MD --> WR --> YAML
+    WR -->|ENDNOTE_MCP_CONFIG| MCP
+```
+
+**Launcher**: `.mcp.json` gọi `bash tools/mcp-wrappers/run-endnote-mcp.sh` (Mac persona). Windows dev: `run-endnote-mcp.cmd` (delegate bash). `markitdown` giữ `uvx` trực tiếp.
 
 ## 2. Paper mới
 
@@ -81,6 +104,7 @@ Fallback search: `search_library` → semantic → hỏi user thêm từ khóa.
 
 ```
 xml_export_path:
+pdf_dir:                  # optional — wrapper heuristic .Data/PDF nếu trống
 sqlite_index_path:
 library_name:
 last_xml_export:

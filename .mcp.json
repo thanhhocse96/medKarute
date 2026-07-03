@@ -1,12 +1,9 @@
 {
-  "_todo": "Verify syntax when MCP setup is tested on target machine",
+  "_todo": "Verify on target machine. Mac/Linux/WSL: bash tools/mcp-wrappers/run-endnote-mcp.sh. Windows dev: tools/mcp-wrappers/run-endnote-mcp.cmd",
   "mcpServers": {
     "endnote-mcp": {
-      "command": "uvx",
-      "args": ["endnote-mcp"],
-      "env": {
-        "ENDNOTE_XML_PATH": "${ENDNOTE_XML_PATH}"
-      }
+      "command": "bash",
+      "args": ["tools/mcp-wrappers/run-endnote-mcp.sh"]
     },
     "markitdown": {
       "command": "uvx",

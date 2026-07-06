@@ -57,6 +57,12 @@ research/{slug}/
 | [insights.md](insights.md) | Mental model |
 | [writing.md](writing.md) | Prose, citation |
 
-## Pack / share (defer)
+## Pack / share (ZIP, không git)
 
-Khi cần chuyển máy không qua git remote: `tools/pack-share.sh` (chưa code — xem `docs/raws/pack-share-script-plan.md`).
+Khi cần gửi bản cập nhật cho máy không dùng git:
+
+```bash
+./tools/pack-share.sh
+```
+
+Output: `share/out/medkarute-share-YYYY-MM-DD.zip` — kèm `SHARE-README.txt` hướng dẫn giải nén và *bắt đầu*.

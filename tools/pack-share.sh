@@ -43,6 +43,13 @@ for agent_dir in .claude/skills .codex/skills .grok/skills; do
 done
 
 COMMIT="$(git -C "$ROOT" rev-parse --short HEAD 2>/dev/null || echo unknown)"
+
+if [ -f "$ROOT/share/BAN-CAP-NHAT-${DATE_TAG}.md" ]; then
+  cp "$ROOT/share/BAN-CAP-NHAT-${DATE_TAG}.md" "$STAGING/medkarute/BAN-CAP-NHAT.md"
+elif ls "$ROOT"/share/BAN-CAP-NHAT-*.md >/dev/null 2>&1; then
+  cp "$(ls -t "$ROOT"/share/BAN-CAP-NHAT-*.md | head -1)" "$STAGING/medkarute/BAN-CAP-NHAT.md"
+fi
+
 cat > "$STAGING/medkarute/SHARE-README.txt" <<EOF
 MedKarute — share ZIP (no git required)
 =======================================
@@ -61,6 +68,7 @@ Notes:
 - Agent skills live under .agents/skills/ (md-to-docx included).
 
 Human guide (Vietnamese): docs/guides/huong-dan-su-dung.md
+What changed in this ZIP: BAN-CAP-NHAT.md (if present)
 EOF
 
 python3 - "$STAGING/medkarute" "$ZIP_PATH" <<'PY'

@@ -3,3 +3,10 @@
 share/out/
 .mcp.json
 /docs/raws
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.agents/skills/**/.venv/
+.agents/skills/md-to-docx copilot/

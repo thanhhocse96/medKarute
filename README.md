@@ -44,8 +44,8 @@ Artifacts, INDEX routing, per-project git → [docs/guides/research/00-overview.
 
 | Tool | Role in MedKarute |
 |------|-------------------------|
-| **MarkItDown MCP** | Convert new PDFs → token-efficient Markdown for the agent (papers not yet in EndNote) |
-| **endnote-mcp** | Read curated EndNote library — search, deep PDF read, citation/bibliography. Read-only (writes via EndNote desktop) |
+| **[MarkItDown MCP](https://github.com/microsoft/markitdown/tree/main/packages/markitdown-mcp)** | Convert new PDFs → token-efficient Markdown for the agent (papers not yet in EndNote). `uvx markitdown-mcp` |
+| **[endnote-mcp](https://github.com/gokmengokhan/endnote-mcp)** | Read curated EndNote library — search, deep PDF read, citation/bibliography. Read-only (writes via EndNote desktop). `uvx endnote-mcp serve` |
 | **[WhySchools / context-mapping](https://github.com/WhySchools/context-mapping)** (context-gen) | **Same lineage** — [WhySchools](https://github.com/WhySchools) *Human is the brain* agentic workflow: shared memory in `.context/` (GLOBAL, MILESTONES, TENSIONS, modules). This repo adopts that governance layout → [`.context/GLOBAL.md`](.context/GLOBAL.md). Early MCP brainstorm archived in [`docs/raws/research-helper.md`](docs/raws/research-helper.md). **Not a runtime dependency** for research sessions |
 | **Markpad** | Local `.md` viewer for the user — not an MCP, viewer only |
 | **md-to-docx** (agent skill) | Convert `writing/*.md` → formatted Word `.docx` (versioning, TOC, front-matter). Vendored from [pickle-an/md-to-docx-skill](https://github.com/pickle-an/md-to-docx-skill) → [`.agents/skills/md-to-docx/`](.agents/skills/md-to-docx/) |

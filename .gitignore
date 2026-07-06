@@ -10,3 +10,4 @@ __pycache__/
 *$py.class
 .agents/skills/**/.venv/
 .agents/skills/md-to-docx copilot/
+tools/pack-share.sh

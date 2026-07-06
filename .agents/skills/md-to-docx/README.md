@@ -4,7 +4,8 @@ Vendored copy of the [md-to-docx-skill](https://github.com/pickle-an/md-to-docx-
 
 | | |
 | --- | --- |
-| **Upstream** | https://github.com/pickle-an/md-to-docx-skill |
+| **Upstream (runtime)** | https://github.com/pickle-an/md-to-docx-skill — Python `scripts/` |
+| **Reference (updates)** | https://github.com/github/awesome-copilot/blob/main/skills/md-to-docx/SKILL.md — GitHub Copilot skill (Node.js); compare docs/features, do not swap pipeline |
 | **Agent entrypoint** | [`SKILL.md`](./SKILL.md) |
 | **Project layout** | `.agents/skills/md-to-docx/` (see [`.agents/README.md`](../../README.md)) |
 | **Cross-agent discovery** | Symlinks in `.claude/skills/`, `.codex/skills/`, `.grok/skills/` — manual repo setup, not auto-created by agents (see [`.agents/README.md`](../../README.md)) |
@@ -128,12 +129,26 @@ python3 -m venv .venv && .venv/bin/pip install python-docx
 
 ## Sync from upstream
 
+**1. Python (pickle-an)** — scripts and template:
+
 ```bash
 git clone --depth 1 https://github.com/pickle-an/md-to-docx-skill /tmp/md-to-docx-skill
 cp /tmp/md-to-docx-skill/*.py .agents/skills/md-to-docx/scripts/
 cp /tmp/md-to-docx-skill/template.docx .agents/skills/md-to-docx/assets/
-# Keep local SKILL.md (English) unless intentionally re-merging upstream skill/SKILL.md
 # Re-apply MedKarute enhancements in md_to_docx.py if the merge overwrote them
 ```
+
+**2. awesome-copilot (reference)** — skill docs / feature checklist:
+
+```bash
+curl -sL -o /tmp/awesome-md-to-docx-SKILL.md \
+  https://raw.githubusercontent.com/github/awesome-copilot/main/skills/md-to-docx/SKILL.md
+# Diff against .agents/skills/md-to-docx/SKILL.md — port doc/UX ideas only (runtime stays Python)
+```
+
+| Source | Stack | Use for |
+| ------ | ----- | ------- |
+| [pickle-an/md-to-docx-skill](https://github.com/pickle-an/md-to-docx-skill) | Python + `python-docx` | Converter code, template, bug reports |
+| [awesome-copilot `md-to-docx`](https://github.com/github/awesome-copilot/blob/main/skills/md-to-docx/SKILL.md) | Node.js + `docx`/`marked` | Updating `SKILL.md`, missing features (e.g. PNG embed sizing notes) |
 
 Report converter bugs to [pickle-an/md-to-docx-skill](https://github.com/pickle-an/md-to-docx-skill). Report MedKarute integration issues in this repo.

@@ -63,9 +63,9 @@ flowchart LR
 
 | Skill | Description | Upstream |
 | ----- | ----------- | -------- |
-| `md-to-docx` | Convert Markdown to formatted Word (.docx) with versioning and normalization | [pickle-an/md-to-docx-skill](https://github.com/pickle-an/md-to-docx-skill) |
+| `md-to-docx` | Convert Markdown to formatted Word (.docx) with versioning and normalization | [pickle-an/md-to-docx-skill](https://github.com/pickle-an/md-to-docx-skill) (Python); also [awesome-copilot SKILL.md](https://github.com/github/awesome-copilot/blob/main/skills/md-to-docx/SKILL.md) for doc/feature updates |
 
-Vendored skills in `.agents/skills/` may diverge from upstream (e.g. English `SKILL.md`, MedKarute symlink layout). To sync or report issues, use the upstream repository.
+Vendored skills in `.agents/skills/` may diverge from upstream (e.g. English `SKILL.md`, MedKarute symlink layout). Sync Python from pickle-an; diff awesome-copilot `SKILL.md` when refreshing instructions — see [`md-to-docx/README.md`](./skills/md-to-docx/README.md).
 
 ## Adding a new skill
 

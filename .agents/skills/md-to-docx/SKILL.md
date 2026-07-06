@@ -3,13 +3,16 @@ name: md-to-docx
 description: Convert Markdown files to formatted Word documents (.docx). Use when the user wants to convert .md to .docx, create a Word document from Markdown, or mentions document conversion.
 metadata:
   upstream: https://github.com/pickle-an/md-to-docx-skill
+  reference: https://github.com/github/awesome-copilot/blob/main/skills/md-to-docx/SKILL.md
 ---
 
 # Markdown to Word Document Converter
 
 This skill converts Markdown files into professionally formatted Word documents (.docx).
 
-**Upstream:** [pickle-an/md-to-docx-skill](https://github.com/pickle-an/md-to-docx-skill) — original Agent Skill and Python scripts. This copy lives under `.agents/skills/md-to-docx/` for MedKarute agent discovery; report bugs or request features upstream unless they are MedKarute-specific integration issues.
+**Upstream (runtime):** [pickle-an/md-to-docx-skill](https://github.com/pickle-an/md-to-docx-skill) — Python scripts in `scripts/`. This copy lives under `.agents/skills/md-to-docx/` for MedKarute agent discovery; report converter bugs upstream unless MedKarute-specific.
+
+**Reference (updates):** [awesome-copilot `md-to-docx` SKILL.md](https://github.com/github/awesome-copilot/blob/main/skills/md-to-docx/SKILL.md) — alternate Node.js skill (GitHub Copilot). Use when refreshing docs or checking feature parity; **do not replace** the Python pipeline with it.
 
 ## When to Invoke
 
@@ -499,12 +502,13 @@ Optional: `requests`, `Pillow` (for remote/local image embedding).
 - `scripts/create_template.py` can regenerate a template matching the formatting specification
 - This skill runs fully standalone with no external dependencies beyond Python packages
 
-## Upstream repository
+## Upstream & reference
 
-| Resource | URL |
-| -------- | --- |
-| Repository | https://github.com/pickle-an/md-to-docx-skill |
-| Upstream `SKILL.md` | https://github.com/pickle-an/md-to-docx-skill/blob/main/skill/SKILL.md |
-| Releases | https://github.com/pickle-an/md-to-docx-skill/releases |
+| Resource | URL | Role |
+| -------- | --- | ---- |
+| pickle-an repository | https://github.com/pickle-an/md-to-docx-skill | **Sync Python** — `*.py`, `template.docx` |
+| pickle-an `SKILL.md` | https://github.com/pickle-an/md-to-docx-skill/blob/main/skill/SKILL.md | Compare skill instructions |
+| pickle-an releases | https://github.com/pickle-an/md-to-docx-skill/releases | Version notes |
+| awesome-copilot `SKILL.md` | https://github.com/github/awesome-copilot/blob/main/skills/md-to-docx/SKILL.md | **Reference only** — Node.js skill; doc/feature parity when updating MedKarute `SKILL.md` / enhancements |
 
-Licensed MIT upstream. When updating this vendored copy, compare against upstream `skill/` and root Python modules.
+Licensed MIT (pickle-an). When updating: sync `.py` from pickle-an, re-apply MedKarute helpers in `md_to_docx.py`, then diff awesome-copilot `SKILL.md` for missing UX/docs ideas (PNG embed notes, prerequisites, etc.).

@@ -71,3 +71,24 @@ docs/ideations/ (scratch, gitignored)
 ```
 
 Brainstorm chưa chốt → giữ `docs/raws/` hoặc `docs/ideations/`; không promote.
+
+## §7 Agent skills (symlinks)
+
+Khi task **thêm hoặc vendored skill mới** — đọc `.agents/README.md` trước khi ghi.
+
+| Quy tắc | Chi tiết |
+|---------|----------|
+| Source of truth | `.agents/skills/<name>/` — chỉ sửa ở đây |
+| Symlink bắt buộc | Sau skill mới, tạo symlink `.claude/skills/`, `.codex/skills/`, `.grok/skills/` → cùng skill |
+| Không tự sinh | Agent **không** auto-tạo symlink; orchestrator chạy bước symlink + commit root |
+| Grok / Claude / Codex | Sản phẩm AI bên ngoài — repo chỉ layout path discovery |
+
+```bash
+SKILL=your-skill-name
+for dir in .claude/skills .codex/skills .grok/skills; do
+  mkdir -p "$dir"
+  ln -sfn "../../.agents/skills/$SKILL" "$dir/$SKILL"
+done
+```
+
+Chi tiết discovery paths và diagram → `.agents/README.md`.

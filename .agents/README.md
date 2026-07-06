@@ -14,6 +14,18 @@ Project skills follow the [Agent Skills](https://agentskills.io) open standard. 
 
 **Source of truth:** `.agents/skills/` — edit skills here only.
 
+## What are Grok, Claude Code, and Codex?
+
+They are **external AI coding assistants** from different vendors — not created by MedKarute:
+
+| Name | Vendor | Typical interface |
+| ---- | ------ | ----------------- |
+| **Grok** | xAI | Grok in Cursor, Grok CLI |
+| **Claude Code** | Anthropic | Claude Code CLI / desktop |
+| **Codex** | OpenAI | Codex CLI |
+
+Each product scans its own skill directory when you open a repo. MedKarute does **not** ship or install these tools; it only lays out paths so they can find shared skills.
+
 ## Agent discovery paths
 
 | Agent | Project path | Notes |
@@ -29,6 +41,22 @@ Compatibility symlinks in this repo point to `.agents/skills/` so all agents sha
 .claude/skills/<name>  →  ../../.agents/skills/<name>
 .codex/skills/<name>   →  ../../.agents/skills/<name>
 .grok/skills/<name>    →  ../../.agents/skills/<name>
+```
+
+### Manual setup — agents do not create this for you
+
+Folders `.claude/`, `.codex/`, `.grok/` and their `skills/` symlinks are **repo setup**, done once by a human or an agent in a setup session — then **committed to git**.
+
+- Agents **read** skills from the paths above; they **do not** auto-create symlinks when you add a new skill.
+- If a skill exists only under `.agents/skills/` with no symlinks, Claude Code / Grok / Codex may not see it until you run the symlink step in [Adding a new skill](#adding-a-new-skill).
+- After adding symlinks, restart the agent session (or wait for live reload).
+
+```mermaid
+flowchart LR
+    setup[Human or setup agent] --> canonical[".agents/skills/"]
+    canonical --> symlinks[".claude / .codex / .grok symlinks"]
+    symlinks --> commit[Commit to git]
+    commit --> discover[Each agent scans its own path]
 ```
 
 ## Available skills

@@ -34,6 +34,7 @@
 | EndNote MCP | `docs/guides/mcp/endnote-mcp-tools.md` | 12 tools |
 | MarkItDown | `docs/guides/mcp/markitdown-mcp.md` | PDF convert (stub) |
 | EndNote decision | `docs/decisions/endnote-workflow.md` | Canonical workflow |
+| Agent skills | `.agents/README.md` | Shared skills; cross-agent symlinks (manual setup) |
 
 ## Active docs (bootstrap)
 
@@ -41,6 +42,7 @@
 - `docs/guides/mcp/endnote-mcp-tools.md`, `markitdown-mcp.md`
 - `docs/decisions/endnote-workflow.md`
 - `docs/templates/*.tpl` (7)
+- `.agents/README.md`, `.agents/skills/` (vendored agent skills)
 
 **Không** trong active docs: `docs/raws/`, `docs/readme/` (README locale cho human — root `README.md` EN là canonical).
 

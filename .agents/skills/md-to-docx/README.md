@@ -7,6 +7,7 @@ Vendored copy of the [md-to-docx-skill](https://github.com/pickle-an/md-to-docx-
 | **Upstream** | https://github.com/pickle-an/md-to-docx-skill |
 | **Agent entrypoint** | [`SKILL.md`](./SKILL.md) |
 | **Project layout** | `.agents/skills/md-to-docx/` (see [`.agents/README.md`](../../README.md)) |
+| **Cross-agent discovery** | Symlinks in `.claude/skills/`, `.codex/skills/`, `.grok/skills/` — manual repo setup, not auto-created by agents (see [`.agents/README.md`](../../README.md)) |
 
 ## Layout
 

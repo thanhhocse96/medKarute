@@ -48,6 +48,7 @@ Artifacts, INDEX routing, per-project git → [docs/guides/research/00-overview.
 | **endnote-mcp** | Read curated EndNote library — search, deep PDF read, citation/bibliography. Read-only (writes via EndNote desktop) |
 | **[WhySchools / context-mapping](https://github.com/WhySchools/context-mapping)** (context-gen) | **Same lineage** — [WhySchools](https://github.com/WhySchools) *Human is the brain* agentic workflow: shared memory in `.context/` (GLOBAL, MILESTONES, TENSIONS, modules). This repo adopts that governance layout → [`.context/GLOBAL.md`](.context/GLOBAL.md). Early MCP brainstorm archived in [`docs/raws/research-helper.md`](docs/raws/research-helper.md). **Not a runtime dependency** for research sessions |
 | **Markpad** | Local `.md` viewer for the user — not an MCP, viewer only |
+| **md-to-docx** (agent skill) | Convert `writing/*.md` → formatted Word `.docx` (versioning, TOC, front-matter). Vendored from [pickle-an/md-to-docx-skill](https://github.com/pickle-an/md-to-docx-skill) → [`.agents/skills/md-to-docx/`](.agents/skills/md-to-docx/) |
 
 ## Quick links
 
@@ -58,3 +59,5 @@ Artifacts, INDEX routing, per-project git → [docs/guides/research/00-overview.
 | [docs/guides/research/00-overview.md](docs/guides/research/00-overview.md) | `research/` workflow detail |
 | [docs/decisions/endnote-workflow.md](docs/decisions/endnote-workflow.md) | EndNote workflow (canonical) |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | Đóng góp — test thật, báo lỗi, sửa governance |
+| [.agents/skills/md-to-docx/](.agents/skills/md-to-docx/) | Markdown → Word skill (`SKILL.md`, upstream link) |
+| [.agents/README.md](.agents/README.md) | Agent skills layout, cross-agent symlinks |

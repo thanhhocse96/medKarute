@@ -48,6 +48,7 @@ Chi tiết artifact, INDEX, git per-project → [00-overview.md](../guides/resea
 | **endnote-mcp** | Đọc thư viện EndNote đã curate — search, đọc PDF sâu, format citation/bibliography. Read-only (write qua EndNote desktop) |
 | **[WhySchools / context-mapping](https://github.com/WhySchools/context-mapping)** (context-gen) | **Cùng một nguồn** — workflow agentic *Human is the brain* của [WhySchools](https://github.com/WhySchools): bộ nhớ dự án trong `.context/` (GLOBAL, MILESTONES, TENSIONS, modules). Repo này áp dụng layout governance đó → [`.context/GLOBAL.md`](../../.context/GLOBAL.md). Brainstorm MCP sớm lưu tại [`research-helper.md`](../raws/research-helper.md). **Không phải dependency chạy** khi làm nghiên cứu hằng ngày |
 | **Markpad** | App mở file `.md` local cho user xem note — không phải MCP, chỉ viewer |
+| **md-to-docx** (agent skill) | Convert `writing/*.md` → Word `.docx` có format (version, TOC, front-matter). Vendored từ [pickle-an/md-to-docx-skill](https://github.com/pickle-an/md-to-docx-skill) → [`.agents/skills/md-to-docx/`](../../.agents/skills/md-to-docx/) |
 
 ## Link nhanh
 
@@ -57,3 +58,5 @@ Chi tiết artifact, INDEX, git per-project → [00-overview.md](../guides/resea
 | [CLAUDE.md](../../CLAUDE.md) | Orchestrator playbook |
 | [00-overview.md](../guides/research/00-overview.md) | Chi tiết workflow `research/` |
 | [endnote-workflow.md](../decisions/endnote-workflow.md) | EndNote workflow (canonical) |
+| [md-to-docx](../../.agents/skills/md-to-docx/) | Skill Markdown → Word (`SKILL.md`, link upstream) |
+| [.agents/README.md](../../.agents/README.md) | Layout agent skills, symlink cross-agent |

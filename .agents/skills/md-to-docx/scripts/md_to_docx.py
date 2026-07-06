@@ -47,7 +47,7 @@ if SCRIPT_DIR not in sys.path:
     sys.path.insert(0, SCRIPT_DIR)
 
 FRONT_MATTER_KEYS = ('title', 'date', 'version', 'audience')
-CJK_FONT = 'SimSun'
+DEFAULT_FONT = 'Times New Roman'
 DEFAULT_DATE_FMT = '%Y-%m-%d'
 
 
@@ -456,13 +456,13 @@ class DocxGenerator:
     
     def _setup_styles(self):
         styles_config = {
-            'Heading 1': {'size': 22, 'bold': True, 'font_cn': CJK_FONT, 'font_en': 'Times New Roman'},
-            'Heading 2': {'size': 16, 'bold': True, 'font_cn': CJK_FONT, 'font_en': 'Times New Roman'},
-            'Heading 3': {'size': 15, 'bold': True, 'font_cn': CJK_FONT, 'font_en': 'Times New Roman'},
-            'Heading 4': {'size': 14, 'bold': True, 'font_cn': CJK_FONT, 'font_en': 'Times New Roman'},
-            'Heading 5': {'size': 14, 'bold': True, 'font_cn': CJK_FONT, 'font_en': 'Times New Roman'},
-            'Heading 6': {'size': 12, 'bold': True, 'font_cn': CJK_FONT, 'font_en': 'Times New Roman'},
-            'Normal': {'size': 12, 'bold': False, 'font_cn': CJK_FONT, 'font_en': 'Times New Roman'},
+            'Heading 1': {'size': 22, 'bold': True, 'font_cn': DEFAULT_FONT, 'font_en': 'Times New Roman'},
+            'Heading 2': {'size': 16, 'bold': True, 'font_cn': DEFAULT_FONT, 'font_en': 'Times New Roman'},
+            'Heading 3': {'size': 15, 'bold': True, 'font_cn': DEFAULT_FONT, 'font_en': 'Times New Roman'},
+            'Heading 4': {'size': 14, 'bold': True, 'font_cn': DEFAULT_FONT, 'font_en': 'Times New Roman'},
+            'Heading 5': {'size': 14, 'bold': True, 'font_cn': DEFAULT_FONT, 'font_en': 'Times New Roman'},
+            'Heading 6': {'size': 12, 'bold': True, 'font_cn': DEFAULT_FONT, 'font_en': 'Times New Roman'},
+            'Normal': {'size': 12, 'bold': False, 'font_cn': DEFAULT_FONT, 'font_en': 'Times New Roman'},
         }
         for style_name, config in styles_config.items():
             try:
@@ -474,7 +474,7 @@ class DocxGenerator:
             except KeyError:
                 pass
     
-    def _set_run_font(self, run, font_cn: str = CJK_FONT, font_en: str = 'Times New Roman', size: float = 12, bold: bool = False):
+    def _set_run_font(self, run, font_cn: str = DEFAULT_FONT, font_en: str = DEFAULT_FONT, size: float = 12, bold: bool = False):
         run.font.size = Pt(size)
         run.font.name = font_en
         run._element.rPr.rFonts.set(qn('w:eastAsia'), font_cn)
@@ -586,7 +586,7 @@ class DocxGenerator:
             if link_text:
                 self._add_hyperlink(paragraph, link_url, link_text, base_size)
     
-    def _set_run_font(self, run, font_cn: str = CJK_FONT, font_en: str = 'Times New Roman', size: float = 12, bold: bool = False, italic: bool = False, strike: bool = False):
+    def _set_run_font(self, run, font_cn: str = DEFAULT_FONT, font_en: str = DEFAULT_FONT, size: float = 12, bold: bool = False, italic: bool = False, strike: bool = False):
         run.font.size = Pt(size)
         run.font.name = font_en
         run._element.rPr.rFonts.set(qn('w:eastAsia'), font_cn)
@@ -609,7 +609,7 @@ class DocxGenerator:
         rFonts = OxmlElement('w:rFonts')
         rFonts.set(qn('w:ascii'), 'Times New Roman')
         rFonts.set(qn('w:hAnsi'), 'Times New Roman')
-        rFonts.set(qn('w:eastAsia'), 'SimSun')
+        rFonts.set(qn('w:eastAsia'), 'Times New Roman')
         rPr.append(rFonts)
         
         sz = OxmlElement('w:sz')
@@ -667,16 +667,16 @@ class DocxGenerator:
         run = p.add_run(main_title)
         run.bold = True
         run.font.size = Pt(22)
-        run.font.name = 'SimSun'
-        run._element.rPr.rFonts.set(qn('w:eastAsia'), 'SimSun')
+        run.font.name = 'Times New Roman'
+        run._element.rPr.rFonts.set(qn('w:eastAsia'), 'Times New Roman')
 
         if subtitle:
             p_sub = self.doc.add_paragraph()
             p_sub.alignment = WD_ALIGN_PARAGRAPH.CENTER
             run_sub = p_sub.add_run(subtitle)
             run_sub.font.size = Pt(16)
-            run_sub.font.name = 'SimSun'
-            run_sub._element.rPr.rFonts.set(qn('w:eastAsia'), 'SimSun')
+            run_sub.font.name = 'Times New Roman'
+            run_sub._element.rPr.rFonts.set(qn('w:eastAsia'), 'Times New Roman')
 
         for _ in range(14 if not subtitle else 10):
             self.doc.add_paragraph()
@@ -687,22 +687,22 @@ class DocxGenerator:
         if version:
             run1 = p.add_run(f'Version: {version}')
             run1.font.size = Pt(12)
-            run1.font.name = 'SimSun'
-            run1._element.rPr.rFonts.set(qn('w:eastAsia'), 'SimSun')
+            run1.font.name = 'Times New Roman'
+            run1._element.rPr.rFonts.set(qn('w:eastAsia'), 'Times New Roman')
             p.add_run('\n')
 
         if date:
             run2 = p.add_run(f'Date: {date}')
             run2.font.size = Pt(12)
-            run2.font.name = 'SimSun'
-            run2._element.rPr.rFonts.set(qn('w:eastAsia'), 'SimSun')
+            run2.font.name = 'Times New Roman'
+            run2._element.rPr.rFonts.set(qn('w:eastAsia'), 'Times New Roman')
 
         if audience:
             p.add_run('\n')
             run3 = p.add_run(f'Audience: {audience}')
             run3.font.size = Pt(12)
-            run3.font.name = 'SimSun'
-            run3._element.rPr.rFonts.set(qn('w:eastAsia'), 'SimSun')
+            run3.font.name = 'Times New Roman'
+            run3._element.rPr.rFonts.set(qn('w:eastAsia'), 'Times New Roman')
 
         self.doc.add_paragraph()
         self.doc.add_page_break()
@@ -717,8 +717,8 @@ class DocxGenerator:
         run = p.add_run('Table of Contents')
         run.bold = True
         run.font.size = Pt(16)
-        run.font.name = 'SimSun'
-        run._element.rPr.rFonts.set(qn('w:eastAsia'), 'SimSun')
+        run.font.name = 'Times New Roman'
+        run._element.rPr.rFonts.set(qn('w:eastAsia'), 'Times New Roman')
 
         for level, text in entries:
             p = self.doc.add_paragraph()
@@ -727,8 +727,8 @@ class DocxGenerator:
             run = p.add_run(text)
             run.bold = level <= 2
             run.font.size = Pt(14 if level == 1 else 12)
-            run.font.name = 'SimSun'
-            run._element.rPr.rFonts.set(qn('w:eastAsia'), 'SimSun')
+            run.font.name = 'Times New Roman'
+            run._element.rPr.rFonts.set(qn('w:eastAsia'), 'Times New Roman')
 
         self.doc.add_page_break()
     
@@ -741,8 +741,8 @@ class DocxGenerator:
             run = p.add_run(text)
             run.bold = True
             run.font.size = Pt(22)
-            run.font.name = 'SimSun'
-            run._element.rPr.rFonts.set(qn('w:eastAsia'), 'SimSun')
+            run.font.name = 'Times New Roman'
+            run._element.rPr.rFonts.set(qn('w:eastAsia'), 'Times New Roman')
     
     def add_heading(self, level: int, text: str):
         if level == 1:
@@ -772,7 +772,7 @@ class DocxGenerator:
         run = p.add_run(text)
         run.bold = True
         run.font.name = 'Times New Roman'
-        run._element.rPr.rFonts.set(qn('w:eastAsia'), 'SimSun')
+        run._element.rPr.rFonts.set(qn('w:eastAsia'), 'Times New Roman')
         
         if level == 1:
             run.font.size = Pt(22)
@@ -1029,8 +1029,8 @@ class DocxGenerator:
                 p_caption.alignment = WD_ALIGN_PARAGRAPH.CENTER
                 run_caption = p_caption.add_run(alt_text)
                 run_caption.font.size = Pt(9)
-                run_caption.font.name = 'SimSun'
-                run_caption._element.rPr.rFonts.set(qn('w:eastAsia'), 'SimSun')
+                run_caption.font.name = 'Times New Roman'
+                run_caption._element.rPr.rFonts.set(qn('w:eastAsia'), 'Times New Roman')
                 run_caption.italic = True
                 
         except Exception:

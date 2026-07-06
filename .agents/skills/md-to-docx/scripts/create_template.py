@@ -7,7 +7,7 @@ import os
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 ASSETS_DIR = os.path.join(os.path.dirname(SCRIPT_DIR), 'assets')
-CJK_FONT = 'SimSun'
+DEFAULT_FONT = 'Times New Roman'
 SOURCE_TEMPLATE = ""
 OUTPUT_TEMPLATE = os.path.join(ASSETS_DIR, 'template.docx')
 
@@ -46,13 +46,13 @@ def create_new_template():
         section.bottom_margin = Cm(2.54)
     
     styles_config = {
-        'Heading 1': {'size': 22, 'bold': True, 'font_cn': CJK_FONT, 'font_en': 'Times New Roman'},
-        'Heading 2': {'size': 16, 'bold': True, 'font_cn': CJK_FONT, 'font_en': 'Times New Roman'},
-        'Heading 3': {'size': 15, 'bold': True, 'font_cn': CJK_FONT, 'font_en': 'Times New Roman'},
-        'Heading 4': {'size': 14, 'bold': True, 'font_cn': CJK_FONT, 'font_en': 'Times New Roman'},
-        'Heading 5': {'size': 14, 'bold': True, 'font_cn': CJK_FONT, 'font_en': 'Times New Roman'},
-        'Heading 6': {'size': 12, 'bold': True, 'font_cn': CJK_FONT, 'font_en': 'Times New Roman'},
-        'Normal': {'size': 12, 'bold': False, 'font_cn': CJK_FONT, 'font_en': 'Times New Roman'},
+        'Heading 1': {'size': 22, 'bold': True, 'font_cn': DEFAULT_FONT, 'font_en': 'Times New Roman'},
+        'Heading 2': {'size': 16, 'bold': True, 'font_cn': DEFAULT_FONT, 'font_en': 'Times New Roman'},
+        'Heading 3': {'size': 15, 'bold': True, 'font_cn': DEFAULT_FONT, 'font_en': 'Times New Roman'},
+        'Heading 4': {'size': 14, 'bold': True, 'font_cn': DEFAULT_FONT, 'font_en': 'Times New Roman'},
+        'Heading 5': {'size': 14, 'bold': True, 'font_cn': DEFAULT_FONT, 'font_en': 'Times New Roman'},
+        'Heading 6': {'size': 12, 'bold': True, 'font_cn': DEFAULT_FONT, 'font_en': 'Times New Roman'},
+        'Normal': {'size': 12, 'bold': False, 'font_cn': DEFAULT_FONT, 'font_en': 'Times New Roman'},
     }
     
     for style_name, config in styles_config.items():

@@ -152,16 +152,16 @@ Leading whitespace on ordinary paragraphs is removed to prevent double indentati
 
 #### Font Specification
 
-| Element | Chinese font | English font | Size | Notes |
-| ------- | ------------ | ------------ | ---- | ----- |
-| Body | SimSun | Times New Roman | 12pt | Standard body text |
-| Heading 1 | SimSun | Times New Roman | 22pt | Major title |
-| Heading 2 | SimSun | Times New Roman | 16pt | Section title |
-| Heading 3 | SimSun | Times New Roman | 15pt | Subsection title |
-| Heading 4 | SimSun | Times New Roman | 14pt | Item title |
-| Heading 5 | SimSun | Times New Roman | 14pt | Sub-item title |
-| Code block | Consolas | Consolas | 9pt | Slightly smaller than body |
-| Inline code | Consolas | Consolas | 12pt | Same as body |
+| Element | Font | Size | Notes |
+| ------- | ---- | ---- | ----- |
+| Body | Times New Roman | 12pt | Default for all prose |
+| Heading 1 | Times New Roman | 22pt | Major title |
+| Heading 2 | Times New Roman | 16pt | Section title |
+| Heading 3 | Times New Roman | 15pt | Subsection title |
+| Heading 4 | Times New Roman | 14pt | Item title |
+| Heading 5 | Times New Roman | 14pt | Sub-item title |
+| Code block | Consolas | 9pt | Monospace |
+| Inline code | Consolas | 12pt | Monospace |
 
 #### Paragraph Specification
 

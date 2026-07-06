@@ -13,9 +13,9 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 ASSETS_DIR = os.path.join(os.path.dirname(SCRIPT_DIR), 'assets')
 TEMPLATE_PATH = os.path.join(ASSETS_DIR, 'template.docx')
 OUTPUT_PATH = os.path.join(ASSETS_DIR, 'template_preview.docx')
-CJK_FONT = 'SimSun'
+DEFAULT_FONT = 'Times New Roman'
 
-def set_run_font(run, font_cn=CJK_FONT, font_en='Times New Roman', size=12, bold=False, italic=False):
+def set_run_font(run, font_cn=DEFAULT_FONT, font_en=DEFAULT_FONT, size=12, bold=False, italic=False):
     run.font.size = Pt(size)
     run.font.bold = bold
     run.font.italic = italic
@@ -75,7 +75,7 @@ def create_preview():
     doc.add_heading('2. Body Text Styles', level=1)
 
     p = doc.add_paragraph()
-    run = p.add_run('Body: SimSun + Times New Roman, 12pt, first-line indent 0.74cm, 1.5× line spacing.')
+    run = p.add_run('Body: Times New Roman 12pt, first-line indent 0.74cm, 1.5× line spacing.')
     set_run_font(run)
 
     p = doc.add_paragraph()
@@ -226,11 +226,11 @@ def create_preview():
 
     doc.add_heading('9. Font Specification Summary', level=1)
 
-    table = doc.add_table(rows=8, cols=4)
+    table = doc.add_table(rows=8, cols=4)  # cols: element, font, size, notes
     table.style = 'Table Grid'
     table.alignment = WD_TABLE_ALIGNMENT.CENTER
 
-    headers = ['Element', 'CJK font', 'Latin font', 'Size']
+    headers = ['Element', 'Font', 'Size', 'Notes']
     for i, header in enumerate(headers):
         cell = table.rows[0].cells[i]
         cell.text = header
@@ -241,13 +241,13 @@ def create_preview():
         set_cell_shading(cell, 'D9D9D9')
 
     data = [
-        ['Body', 'SimSun', 'Times New Roman', '12pt'],
-        ['Heading 1', 'SimSun', 'Times New Roman', '22pt'],
-        ['Heading 2', 'SimSun', 'Times New Roman', '16pt'],
-        ['Heading 3', 'SimSun', 'Times New Roman', '15pt'],
-        ['Heading 4', 'SimSun', 'Times New Roman', '14pt'],
-        ['Code block', 'Consolas', 'Consolas', '9pt'],
-        ['Inline code', 'Consolas', 'Consolas', '12pt'],
+        ['Body', 'Times New Roman', '12pt', 'Default'],
+        ['Heading 1', 'Times New Roman', '22pt', 'Bold'],
+        ['Heading 2', 'Times New Roman', '16pt', 'Bold'],
+        ['Heading 3', 'Times New Roman', '15pt', 'Bold'],
+        ['Heading 4', 'Times New Roman', '14pt', 'Bold'],
+        ['Code block', 'Consolas', '9pt', 'Monospace'],
+        ['Inline code', 'Consolas', '12pt', 'Monospace'],
     ]
     for row_idx, row_data in enumerate(data):
         for col_idx, cell_text in enumerate(row_data):

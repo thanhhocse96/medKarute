@@ -70,9 +70,9 @@ flowchart LR
 | Audience | — | `Audience: …` |
 | TOC page title | — (no TOC) | `Table of Contents` |
 | Missing image | `[图片加载失败: …]` | `[Image not found: …]` |
-| CJK font id | `宋体` | `SimSun` (same family, EN locale name) |
+| Body font | `宋体` / SimSun | `Times New Roman` (default) |
 
-Typography unchanged: SimSun + Times New Roman, 0.74cm first-line indent, page break before `##`.
+Typography: Times New Roman throughout (code: Consolas), 0.74cm first-line indent, page break before `##`.
 
 ### What is actually better
 

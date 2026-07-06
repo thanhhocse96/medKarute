@@ -1,6 +1,7 @@
 /research/
 .local/
-share/out/
+share/
+tools/pack-share.sh
 .mcp.json
 /docs/raws
 

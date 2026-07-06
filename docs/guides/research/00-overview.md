@@ -59,10 +59,4 @@ research/{slug}/
 
 ## Pack / share (ZIP, không git)
 
-Khi cần gửi bản cập nhật cho máy không dùng git:
-
-```bash
-./tools/pack-share.sh
-```
-
-Output: `share/out/medkarute-share-YYYY-MM-DD.zip` — kèm `SHARE-README.txt` hướng dẫn giải nén và *bắt đầu*.
+Gói ZIP cho máy không dùng git: script `tools/pack-share.sh` + ghi chú `share/BAN-CAP-NHAT-*.md` — **gitignore**, chỉ trên máy maintain, không commit.

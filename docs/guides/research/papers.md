@@ -45,6 +45,33 @@ flowchart TD
 
 **Invariant**: Mọi thay đổi library = re-export XML + `index`. Chi tiết → `docs/decisions/endnote-workflow.md`.
 
+## OCR — khi `raw.md` là bản scan/ảnh chụp
+
+Bước 2 (MarkItDown) giả định PDF có text layer. Bản scan/ảnh chụp màn hình ra `raw.md` rỗng hoặc quá ngắn so với số trang — cần OCR trước khi viết paper note.
+
+```mermaid
+flowchart TD
+    B["MarkItDown → .raw.md"] --> C{"raw.md rỗng/quá ngắn<br/>so với số trang?"}
+    C -->|Không| D["Paper note bình thường"]
+    C -->|Có, nghi scan| ASK1{"Hỏi user: raw.md thiếu text,<br/>OCR không?"}
+    ASK1 -->|Không| D2["Paper note, ghi chú<br/>text có thể thiếu do scan"]
+    ASK1 -->|Có| ASK2{"Hỏi user: input là gì?<br/>PDF nhiều trang hay ảnh rời?"}
+    ASK2 -->|PDF nhiều trang| E1["Auto-spawn Agent model:haiku<br/>OCR từng trang"]
+    ASK2 -->|Ảnh chụp rời| E2["Auto-spawn Agent model:haiku<br/>OCR từng ảnh"]
+    E1 --> F["Orchestrator nhận text,<br/>làm sạch, ghi vào raw.md"]
+    E2 --> F
+    F --> D
+```
+
+1. Orchestrator phát hiện `raw.md` nghi là bản scan (rỗng/quá ngắn so với số trang PDF) → **hỏi user xác nhận có muốn OCR không** — không tự động chạy
+2. Nếu có → **hỏi user cách input**: PDF nhiều trang (Haiku đọc từng trang) hay ảnh chụp màn hình rời (user cung cấp path/paste ảnh)
+3. Orchestrator auto-spawn `Agent` (`model: haiku`, `subagent_type: general-purpose`) — OCR ra text thuần, **không ghi file**, chỉ trả kết quả
+4. Orchestrator nhận kết quả, làm sạch (subagent có thể escape ký tự lạ — xem bài học ở `chien-luoc-erp-helper.md` project khác), ghi đè/append vào `papers/{slug}.raw.md`
+5. Ghi 1 dòng log trong paper note: model dùng (haiku), số trang/ảnh OCR, thời gian — phục vụ audit
+6. Tiếp tục luồng paper note bình thường (bước 3 trở đi ở trên)
+
+**Không tự động OCR mà không hỏi** — quyết định tốn subagent-call thuộc về user mỗi lần, không suy đoán.
+
 ## Paper đã có trong EndNote
 
 Không bắt buộc copy PDF vào `papers/` — `read_pdf_section` đọc attachment trong library.

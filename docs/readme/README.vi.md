@@ -7,6 +7,21 @@
 
 **MedKarute** (trước gọi `research-helper`) là chat-driven research assistant: agent (orchestrator) điều phối workflow nghiên cứu qua chat, ghi kết quả vào file Markdown trong `research/{slug}/`, và gọi hai MCP — **MarkItDown** (PDF mới) và **endnote-mcp** (thư viện EndNote đã curate). Governance (`AGENTS.md`, `CLAUDE.md`, `docs/`) mô tả cách agent hoạt động; dữ liệu nghiên cứu tách riêng per-project.
 
+## MedKarute vs NotebookLM
+
+NotebookLM là app hosted, dùng ngay. MedKarute là **harness** — bạn tự lắp trên agent coding tool, kết quả nằm trong file (`research/{slug}/`), không phải app dùng liền. Hai loại khác nhau, không ngang hàng.
+
+| | **NotebookLM** | **MedKarute** |
+|---|---|---|
+| Setup | Thấp | Cao hơn (MCP, git per-project) |
+| Lưu trữ | Cloud notebook | Markdown git-tracked |
+| Hợp nhất khi | Hỏi nhanh, tóm tắt lướt | Nghiên cứu dài hạn, citation, deliverable |
+| Token | Giá Google | Tiết kiệm **có điều kiện** — chỉ khi tuân load map (1 sub-INDEX/lần) |
+
+**Lưu ý:** dùng ẩu (dump cả `papers/`+`sessions/`+`insights/`) tốn *hơn* NotebookLM. MCP chỉ orchestrator gọi — subagent không đụng tool, nên hiệu quả token là kỷ luật, không phải tự động.
+
+**Chọn:** NotebookLM cho đọc nhanh không setup. MedKarute khi cần tích luỹ trong file, sống qua nhiều phiên, nối EndNote + Word.
+
 ## Bắt đầu
 
 1. Clone/mở repo này.

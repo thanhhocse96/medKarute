@@ -7,6 +7,21 @@
 
 **MedKarute** (formerly `research-helper`) is a chat-driven research assistant: an agent (orchestrator) runs the research workflow via chat, writes results to Markdown under `research/{slug}/`, and calls two MCP servers — **MarkItDown** (new PDFs) and **endnote-mcp** (curated EndNote library). Governance (`AGENTS.md`, `CLAUDE.md`, `docs/`) defines how the agent behaves; research data lives in separate per-project folders.
 
+## MedKarute vs NotebookLM
+
+NotebookLM is a hosted app, ready to use. MedKarute is a **harness** — you wire it onto an agent coding tool, and output lives in files (`research/{slug}/`), not a ready-made app. Different category, not a head-to-head.
+
+| | **NotebookLM** | **MedKarute** |
+|---|---|---|
+| Setup | Low | Higher (MCP, per-project git) |
+| Storage | Cloud notebook | Git-tracked Markdown |
+| Best fit | Quick Q&A, skim summaries | Longitudinal research, citations, deliverables |
+| Token model | Google pricing | Savings **conditional** — only if you follow the load map (one sub-INDEX at a time) |
+
+**Note:** careless use (dumping all of `papers/`+`sessions/`+`insights/`) costs *more* than NotebookLM. MCP is orchestrator-only — subagents don't touch tools — so the token efficiency is discipline, not automatic.
+
+**Pick:** NotebookLM for fast reading with no setup. MedKarute when research must accumulate in files, survive across sessions, and connect to EndNote + Word.
+
 ## Getting started
 
 1. Clone or open this repo.
